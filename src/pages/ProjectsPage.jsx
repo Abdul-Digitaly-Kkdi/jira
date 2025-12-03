@@ -3,6 +3,7 @@ import { Tabs, Button } from 'antd'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import DragDropModal from '../shared/DragDropModal'
+import ProjectSummary from './ProfileSummary'
 
 const { TabPane } = Tabs
 
@@ -62,7 +63,7 @@ export default function ProjectsPage() {
                 className='flex'
             >
                 <TabPane tab="Project Summary" key="Summary">
-                    Overview content for Project {id}
+                    <ProjectSummary projectId={id} />
                 </TabPane>
 
                 <TabPane tab="Product Backlog Items" key=" Backlog ">

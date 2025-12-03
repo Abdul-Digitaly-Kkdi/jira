@@ -7,7 +7,7 @@ import {
   ClockCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { DoorClosed, LogOut, Plus } from "lucide-react";
 import Modal from "./Modal";
 import { createProject, getAllUsers } from "../API/ProjectAPI";
 
@@ -23,17 +23,13 @@ export default function MainLayout({ children }) {
     ? "employees"
     : "timetracking";
 
-  const [projectList, setProjectList] = useState([]);
   const [newProject, setNewProject] = useState({});
   const [users, setUsers] = useState([]);
-
+  const [projectList, setProjectList] = useState([]); // ✅ Added
   const [showProjectModal, setShowProjectModal] = useState(false);
 
   // useEffect(() => {
-  //   setProjectList([
-  //     { id: 1, name: "Website Redesign", tasks: 12 },
-  //     { id: 2, name: "Mobile App UI", tasks: 8 },
-  //     { id: 3, name: "E-commerce Upgrade", tasks: 5 },
+  //   setNewProject([
   //   ]);
   // }, []);
 
@@ -76,6 +72,9 @@ export default function MainLayout({ children }) {
       console.error("Failed to create project:", error);
     }
   };
+  const handleOut = () => {
+    navigate("/");
+  };
 
   return (
     <Layout className="app-shell">
@@ -83,7 +82,7 @@ export default function MainLayout({ children }) {
         width={260}
         collapsedWidth={0}
         theme="light"
-        className="min-h-screen p-5 bg-white shadow-lg border-r border-gray-200"
+        className="min-h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
       >
         {/* BRAND */}
         <div className="mb-10 flex items-center space-x-3 px-2">
@@ -131,39 +130,54 @@ export default function MainLayout({ children }) {
         </div>
 
         {/* PROJECTS */}
+
+        {/* PROJECT LIST */}
         {mainSelected === "projects" && (
           <div className="mt-8">
             <div className="flex justify-between items-center">
               <p className="text-xs font-semibold text-gray-500 uppercase mb-3 ml-1 tracking-wide">
                 Your Projects
               </p>
-              <p>
-                <button
-                  className="font-bold rounded-full hover:scale-120 cursor-pointer"
-                  onClick={() => setShowProjectModal(true)}
-                >
-                  <Plus size={13} />
-                </button>
-              </p>
+
+              <button
+                className="font-bold rounded-full hover:scale-120 cursor-pointer"
+                onClick={() => setShowProjectModal(true)}
+              >
+                <Plus size={13} />
+              </button>
             </div>
 
             <div className="space-y-2">
-              {projectList.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => navigate(`/projects/${p.id}`)}
-                  className={`w-full px-4 py-3 rounded-xl flex justify-between items-center transition-all text-left ${
-                    String(activeProjectId) === String(p.id)
-                      ? "bg-indigo-600 text-white shadow-md"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  <span className="font-medium">{p.name}</span>
-                </button>
-              ))}
+              {projectList?.map(
+                (
+                  p // ✅ FIXED
+                ) => (
+                  <button
+                    key={p.id}
+                    onClick={() => navigate(`/projects/${p.id}`)}
+                    className={`w-full px-4 py-3 rounded-xl flex justify-between items-center transition-all text-left ${
+                      String(activeProjectId) === String(p.id)
+                        ? "bg-indigo-600 text-white shadow-md"
+                        : "text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    <span className="font-medium">{p.name}</span>
+                  </button>
+                )
+              )}
             </div>
           </div>
         )}
+
+        <div className="absolute bottom-5 left-5 right-5">
+          <button
+            onClick={handleOut}
+            className="w-full flex items-center gap-3 p-3 font-bold text-center  rounded-lg bg-red-500 transition"
+          >
+            <LogOut />
+            Logout
+          </button>
+        </div>
       </Sider>
 
       {/* CONTENT */}
