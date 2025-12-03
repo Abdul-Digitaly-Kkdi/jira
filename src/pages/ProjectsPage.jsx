@@ -84,15 +84,15 @@ export default function ProjectsPage() {
                 </TabPane>
 
                 <TabPane tab="Lists" key="Lists">
-                    File management for project {id}
+                    Lists management for project {id}
                 </TabPane>
 
                 <TabPane tab="Goals" key="Goals">
-                    File management for project {id}
+                    Goals management for project {id}
                 </TabPane>
 
                 <TabPane tab="Archieved Items" key="Archieved">
-                    File management for project {id}
+                    Archieved management for project {id}
                 </TabPane>
 
                 
