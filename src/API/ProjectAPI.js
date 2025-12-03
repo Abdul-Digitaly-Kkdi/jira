@@ -57,10 +57,26 @@ export const getWorkItems = async (projectId) => {
 };
 
 //  Manage project members
-export const manageProjectMember = async (projectId, payload) => {
-  const res = await API.post(`/projects/${projectId}/members`, payload);
-  return res.data;
+export const manageProjectMember = async (project_id, payload) => {
+  try {
+    const res = await API.post(`/projects/${project_id}/members`, payload);
+    return res.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
 };
+
+
+// Remove a member from a project
+export const removeProjectMember = async (project_id, user_id) => {
+  try {
+    const res = await API.delete(`/projects/${project_id}/members/${user_id}`);
+    return res.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 //  Get all users (for dropdowns)
 export const getAllUsers = async () => {
   const res = await API.get("/users"); // This will automatically attach token
@@ -129,12 +145,12 @@ export const createEpic = async (boardData) => {
   return res.data;
 };
 
-export const createIssues = async (payload) => {
+export const createBacklog = async (payload) => {
   const res = await API.post(`/issues/`, payload);
   return res.data;
 };
 
-export const getIssues = async (projectId) => {
+export const getBacklogData  = async (projectId) => {
   const res = await API.get(`/issues/?project_id=${projectId}`);
   return res.data;
 };
@@ -261,4 +277,9 @@ export const getCompleteSprints = async (projectId) => {
   return res.data;
 };
   
+export const deleteIssues = async (issueID) => {
+  const res = await API.delete(`/issues/${issueID}`);
+  return res.data;
+};
+
 

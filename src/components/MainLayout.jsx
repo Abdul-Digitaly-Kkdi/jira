@@ -6,10 +6,10 @@ import {
   TeamOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons";
-import { useNavigate, useLocation } from "react-router-dom";
-import { DoorClosed, LogOut, Plus } from "lucide-react";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
+import { DoorClosed, LogOut, MoreHorizontal, Plus, Trash2 } from "lucide-react";
 import Modal from "./Modal";
-import { createProject, getAllUsers } from "../API/ProjectAPI";
+import { createProject, deleteProject, getAllProjects, getAllUsers } from "../API/ProjectAPI";
 
 const { Sider, Content } = Layout;
 
@@ -27,6 +27,7 @@ export default function MainLayout({ children }) {
   const [users, setUsers] = useState([]);
   const [projectList, setProjectList] = useState([]); // ✅ Added
   const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   // useEffect(() => {
   //   setNewProject([
@@ -75,6 +76,34 @@ export default function MainLayout({ children }) {
   const handleOut = () => {
     navigate("/");
   };
+  
+useEffect(() => {
+  const fetchProjects = async () => {
+    try {
+      const data = await getAllProjects();
+      setProjectList(data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  };
+
+  fetchProjects();
+}, []);
+
+
+const handleDelete = async () => {
+    try {
+      const res = await deleteProject(activeProjectId);
+      console.log("Deleted:", res);
+      toast.success("Project Deleted Successfully!");
+      setShowMenu(false);
+    } catch (error) {
+      console.error("Error deleting:", error);
+      toast.error("Delete failed!");
+    }
+  };
+
+
 
   return (
     <Layout className="app-shell">
@@ -150,7 +179,7 @@ export default function MainLayout({ children }) {
             <div className="space-y-2">
               {projectList?.map(
                 (
-                  p // ✅ FIXED
+                  p 
                 ) => (
                   <button
                     key={p.id}
@@ -162,13 +191,29 @@ export default function MainLayout({ children }) {
                     }`}
                   >
                     <span className="font-medium">{p.name}</span>
+                    <span className="text-xs font-mono opacity-70">
+                      <button
+        onClick={() => setShowMenu(!showMenu)}
+        className="p-2 hover:bg-gray-200 rounded-full"
+      >
+        <MoreHorizontal />
+      </button></span>
                   </button>
                 )
               )}
             </div>
           </div>
         )}
-
+ {showMenu && (
+        <div className="absolute right-0 mt-2 w-36 bg-white shadow-lg rounded-md border p-2 z-50">
+          <button
+            onClick={handleDelete}
+            className="flex items-center gap-2 w-full text-left px-3 py-2 hover:bg-red-100 text-red-600"
+          >
+            <Trash2 size={16} /> Delete Project
+          </button>
+        </div>
+      )}
         <div className="absolute bottom-5 left-5 right-5">
           <button
             onClick={handleOut}
@@ -182,7 +227,9 @@ export default function MainLayout({ children }) {
 
       {/* CONTENT */}
       <Layout>
-        <Content className="p-8 bg-gray-50 min-h-screen">{children}</Content>
+        <Content className="p-8 bg-gray-50 min-h-screen">
+  <Outlet />
+</Content>
       </Layout>
 
       {/* 🟣 PROJECT ADD MODAL */}
@@ -378,7 +425,7 @@ export default function MainLayout({ children }) {
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-black">Platform</label>
                   <select
-                    className="p-3 rounded-lg bg-gray-900 border border-gray-700 text-gray-200 focus:border-blue-500 outline-none"
+                    className="p-3 rounded-lg  border border-gray-700 text-gray-200 focus:border-blue-500 outline-none"
                     value={newProject.platform || ""}
                     onChange={(e) =>
                       setNewProject({ ...newProject, platform: e.target.value })

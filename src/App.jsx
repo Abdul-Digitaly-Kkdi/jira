@@ -6,6 +6,8 @@ import EmployeesPage from './pages/EmployeesPage'
 import TimeTrackingPage from './pages/TimeTrackingPage'
 import Login from './Authendication/Login'
 import ProtectedRoute from './ProtectedRoute'
+import ForgetPassword from './Authendication/ForgetPassword'
+import ResetPassword from './Authendication/ResetPassword'
 
 export default function App() {
   return (
@@ -27,6 +29,10 @@ export default function App() {
         <Route path="projects/:id" element={<ProjectsPage />} />
         <Route path="employees" element={<EmployeesPage />} />
         <Route path="timetracking" element={<TimeTrackingPage />} />
+        <Route path='/ForgetPassword' element={<ForgetPassword/>}/>
+        <Route path='/ResetPassword' element={<ResetPassword/>}/>
+
+
       </Route>
 
       {/* If user enters wrong route */}

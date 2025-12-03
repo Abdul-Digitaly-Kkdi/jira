@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import DragDropModal from '../shared/DragDropModal'
 import ProjectSummary from './ProfileSummary'
+import ProductBacklog from './ProductBacklog'
 
 const { TabPane } = Tabs
 
@@ -48,7 +49,7 @@ export default function ProjectsPage() {
     return (
         <div className="space-y-6 p-2">
             <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-semibold">Project #{id}</h2>
+                <h2 className="text-2xl font-semibold"></h2>
                 {activeTab === "board" && (
                     <Button type="primary" onClick={() => setDdVisible(true)}>
                         Add Column
@@ -67,7 +68,7 @@ export default function ProjectsPage() {
                 </TabPane>
 
                 <TabPane tab="Product Backlog Items" key=" Backlog ">
-                    Product Backlog Items list coming soon
+                     <ProductBacklog projectId={id} />
                 </TabPane>
 
                 <TabPane tab="Board" key="board">
