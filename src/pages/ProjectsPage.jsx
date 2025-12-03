@@ -11,7 +11,7 @@ export default function ProjectsPage() {
     const [projects, setProjects] = useState([])
     const [loading, setLoading] = useState(false)
 
-    const [activeTab, setActiveTab] = useState("overview");
+    const [activeTab, setActiveTab] = useState("Summary");
     const [ddVisible, setDdVisible] = useState(false);
 
 
@@ -59,17 +59,14 @@ export default function ProjectsPage() {
                 activeKey={activeTab}
                 onChange={(key) => setActiveTab(key)}
                 type="card"
+                className='flex'
             >
-                <TabPane tab="Overview" key="overview">
+                <TabPane tab="Project Summary" key="Summary">
                     Overview content for Project {id}
                 </TabPane>
 
-                <TabPane tab="Tasks" key="tasks">
-                    Tasks list coming soon
-                </TabPane>
-
-                <TabPane tab="Files" key="files">
-                    File management for project {id}
+                <TabPane tab="Product Backlog Items" key=" Backlog ">
+                    Product Backlog Items list coming soon
                 </TabPane>
 
                 <TabPane tab="Board" key="board">
@@ -85,6 +82,20 @@ export default function ProjectsPage() {
                         ]}
                     />
                 </TabPane>
+
+                <TabPane tab="Lists" key="Lists">
+                    File management for project {id}
+                </TabPane>
+
+                <TabPane tab="Goals" key="Goals">
+                    File management for project {id}
+                </TabPane>
+
+                <TabPane tab="Archieved Items" key="Archieved">
+                    File management for project {id}
+                </TabPane>
+
+                
             </Tabs>
 
 

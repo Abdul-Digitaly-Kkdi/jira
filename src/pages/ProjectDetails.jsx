@@ -20,7 +20,7 @@ export default function ProjectDetails() {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold text-gray-800 p-80">{project.name}gfjfj</h1>
+            <h1 className="text-3xl font-bold text-gray-800 p-80">{project.name}</h1>
             <p className="mt-4 text-gray-600">{project.desc}</p>
         </div>
     );
