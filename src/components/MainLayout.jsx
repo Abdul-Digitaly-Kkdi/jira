@@ -432,9 +432,9 @@ const handleDelete = async () => {
                     }
                   >
                     <option value="">Select Platform</option>
-                    <option value="web">Web</option>
-                    <option value="android">Android</option>
-                    <option value="ios">iOS</option>
+                    <option value="Web">Web</option>
+                    <option value="Android">Android</option>
+                    <option value="IOS">IOS</option>
                   </select>
                 </div>
               </div>

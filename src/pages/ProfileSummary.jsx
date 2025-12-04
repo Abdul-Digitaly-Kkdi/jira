@@ -111,7 +111,7 @@ export default function ProjectSummary({ projectId }) {
               <Info />{" "}
               <h2 className="text-lg font-semibold text-gray-700">Platform</h2>
             </div>
-            <p className="text-gray-900 text-xl mt-3 font-semibold capitalize">
+            <p className=" text-xl mt-3 font-semibold capitalize">
               {project.platform}
             </p>
           </div>
