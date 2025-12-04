@@ -69,17 +69,6 @@ export default function ProjectsPage() {
                 </TabPane>
 
                 <TabPane tab="Board" key="board">
-                    {/* <DragDropModal
-                        onSave={(order) => {
-                            console.log("saved order", order)
-                            setDdVisible(false)
-                        }}
-                        items={[
-                            { id: "t1", content: "Task 1" },
-                            { id: "t2", content: "Task 2" },
-                            { id: "t3", content: "Task 3" },
-                        ]}
-                    /> */}
                     <BoardView />
                 </TabPane>
 
