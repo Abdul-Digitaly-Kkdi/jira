@@ -4,8 +4,8 @@ import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import DragDropModal from '../shared/DragDropModal'
 import ProjectSummary from './ProfileSummary'
-import ProductBacklog from './ProductBacklog'
-import BoardView from './BoardView'
+import BoardIndex from './JiraBoard/BoardIndex'
+import ProductBacklog from './ProductBacklog/ProductBacklog'
 
 const { TabPane } = Tabs
 
@@ -58,7 +58,7 @@ export default function ProjectsPage() {
                 activeKey={activeTab}
                 onChange={(key) => setActiveTab(key)}
                 type="card"
-                className='flex'
+                className='flex overflow-y-auto'
             >
                 <TabPane tab="Project Summary" key="Summary">
                     <ProjectSummary projectId={id} />
@@ -69,7 +69,7 @@ export default function ProjectsPage() {
                 </TabPane>
 
                 <TabPane tab="Board" key="board">
-                    <BoardView />
+                    <BoardIndex />
                 </TabPane>
 
                 <TabPane tab="Lists" key="Lists">

@@ -1,60 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Plus } from "lucide-react";
-import { createEpic, getEpic } from "../../API/ProjectAPI";
-import toast, { Toaster } from "react-hot-toast";
 
-export default function Epic({ projectId }) {
-  const [epicName, setEpicName] = useState("");
-  const [epics, setEpics] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetchEpics();
-  }, []);
-
-  const fetchEpics = async () => {
-    try {
-      const res = await getEpic(projectId);
-      setEpics(res);
-    } catch (err) {
-      toast.error("Failed to fetch epics");
-    }
-  };
-
-  const handleEpicCreate = async () => {
-    if (!epicName.trim()) {
-      toast.error("Epic name cannot be empty!");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const body = {
-        name: epicName,
-        project_id: projectId,
-        description: "No description",
-      };
-
-      const newEpic = await createEpic(body);
-      setEpics((prev) => [...prev, newEpic]);
-      setEpicName("");
-      toast.success("Epic created successfully!");
-    } catch (err) {
-      toast.error("Epic creation failed");
-    }
-    setLoading(false);
-  };
-
+export default function Epic({ epicName, setEpicName, epics, loading, handleEpicCreate }) {
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-3xl shadow-xl sm:p-8">
-      <Toaster position="top-right" reverseOrder={false} />
-
-      <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">
-        Epics
-      </h2>
-
+    <div className="max-w-2xl p-6">
       {/* Input + Add Button */}
-      <div className="flex flex-col s gap-4 mb-6">
+      <div className="flex flex-col gap-4 mb-6">
         <input
           type="text"
           placeholder="New Epic Name"
@@ -83,7 +34,7 @@ export default function Epic({ projectId }) {
         {epics.map((e) => (
           <div
             key={e.id}
-            className="flex flex-col j hover:scale-105 transition-transform"
+            className="flex flex-col hover:scale-105 transition-transform"
           >
             <h3 className="text-lg font-bold capitalize mb-2">{e.name}</h3>
             <p className="text-xs opacity-70">Epic ID: {e.id}</p>

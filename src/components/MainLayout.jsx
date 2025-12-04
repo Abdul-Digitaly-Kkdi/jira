@@ -23,7 +23,10 @@ export default function MainLayout({ children }) {
     ? "employees"
     : "timetracking";
 
-  const [newProject, setNewProject] = useState({});
+ const [newProject, setNewProject] = useState({
+  assignedEmployees: [],
+});
+
   const [users, setUsers] = useState([]);
   const [projectList, setProjectList] = useState([]);
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -52,27 +55,25 @@ export default function MainLayout({ children }) {
     : null;
 
   const handleAddProject = async () => {
-    if (!newProject.name.trim()) return;
+  try {
+    const payload = {
+      ...newProject,
+      platform: newProject.platform?.toLowerCase(),  // 🔥 FIX
+    };
 
-    try {
-      const createdProject = await createProject(newProject);
-      setProjectList((prev) => [...prev, createdProject]);
-      setNewProject({
-        name: "",
-        key: "",
-        avatar: "",
-        startDate: "",
-        endDate: "",
-        projectLead: "",
-        assignedEmployees: [],
-        platform: "",
-        description: "",
-      });
-      setShowProjectModal(false);
-    } catch (error) {
-      console.error("Failed to create project:", error);
-    }
-  };
+    console.log("Final Payload:", payload);
+
+    const res = await createProject(payload);
+
+    console.log("Created", res.data);
+    toast.success("Project created!");
+    setShowProjectModal(false);
+
+  } catch (error) {
+    console.error("Failed to create project:", error);
+  }
+};
+
   const handleOut = () => {
     navigate("/");
   };
@@ -227,9 +228,12 @@ const handleDelete = async () => {
 
       {/* CONTENT */}
       <Layout>
-        <Content className="p-8 bg-gray-50 min-h-screen">
-  <Outlet />
+        <Content className="p-8 bg-gray-50 min-h-screen flex flex-col">
+  <div className="flex-1 overflow-y-auto">
+    <Outlet />
+  </div>
 </Content>
+
       </Layout>
 
       {/* 🟣 PROJECT ADD MODAL */}
@@ -424,18 +428,20 @@ const handleDelete = async () => {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm text-black">Platform</label>
-                  <select
-                    className="p-3 rounded-lg  border border-gray-700 text-gray-200 focus:border-blue-500 outline-none"
-                    value={newProject.platform || ""}
-                    onChange={(e) =>
-                      setNewProject({ ...newProject, platform: e.target.value })
-                    }
-                  >
-                    <option value="">Select Platform</option>
-                    <option value="Web">Web</option>
-                    <option value="Android">Android</option>
-                    <option value="IOS">IOS</option>
-                  </select>
+              <select
+  className="p-3 rounded-lg border border-gray-700 text-gray-200 focus:border-blue-500 outline-none"
+  value={newProject.platform || ""}
+  onChange={(e) =>
+    setNewProject({ ...newProject, platform: e.target.value })
+  }
+>
+  <option value="">Select Platform</option>
+  <option value="web">Web</option>
+  <option value="android">Android</option>
+  <option value="ios">IOS</option>
+</select>
+
+
                 </div>
               </div>
 
