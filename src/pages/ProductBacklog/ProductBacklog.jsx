@@ -11,6 +11,9 @@
     const [epics, setEpics] = useState([]);
     const [epicName, setEpicName] = useState("");
     const [epicLoading, setEpicLoading] = useState(false);
+    const [selectedEpicId, setSelectedEpicId] = useState(null);
+const [showEpic, setShowEpic] = useState(false);
+
 
     // --- Sprints state ---
     const [sprints, setSprints] = useState([]);
@@ -170,85 +173,79 @@
 
 
 
-   return (
-    <div className="p-6 lg:p-10 bg-gradient-to-br from-gray-100 to-gray-50 min-h-screen">
-      <Toaster position="top-right" />
+ return (
+  <div className="p-6 lg:p-10 bg-gradient-to-br from-gray-100 to-gray-50 min-h-screen">
+    <button
+    onClick={() => setShowEpic(!showEpic)}
+    className="px-4 py-2 rounded-xl border text-white"
+  >
+    {showEpic ? "Hide Epics" : "Show Epics"}
+  </button>
+    <Toaster position="top-right" />
 
-      {/* Page Header */}
-      <h1 className="text-4xl font-extrabold text-gray-900 mb-10 text-center">
-        🗂 Project Backlog Dashboard
-      </h1>
+    <div className="max-w-7xl mx-auto space-y-12">
+      <div className="flex gap-10">
+        
+        <div className="bg-white h-fit p-6 lg:p-8 rounded-3xl border border-gray-200">
+      
+{showEpic && (
+        <Epic
+          epicName={epicName}
+          setEpicName={setEpicName}
+          epics={epics}
+          loading={epicLoading}
+          handleEpicCreate={handleEpicCreate}
+          setSelectedEpicId={setSelectedEpicId}
+        />
+        )}
+      </div>
+      
+      <div className="w-full">
+  
 
-      {/* Horizontal card layout */}
-      <div className="flex flex-col lg:flex-row gap-6">
-
-        {/* Backlog Card */}
-        <div className="bg-white border border-gray-200 rounded-3xl shadow-xl flex-1 flex flex-col hover:scale-[1.02] transition-transform duration-200">
-          <div className="flex items-center gap-3 p-6 border-b border-gray-100">
-            <ListChecks className="w-6 h-6 text-green-500" />
-            <h2 className="text-2xl font-semibold text-gray-800">Backlog</h2>
-          </div>
-          <div className="p-4 overflow-y-auto flex-1 max-h-[550px]">
-            <Backlog
-              formData={backlogForm}
-              setFormData={setBacklogForm}
-              handleChange={handleBacklogChange}
-              handleSubmit={handleBacklogCreate}
-              backlogs={backlogs}
-              loading={backlogLoading}
-              epics={epics}
-              users={users}
-              sprints={sprints}
-              onAssignToSprint={handleAssignToSprint}
-            />
-          </div>
-        </div>
-
-        {/* Sprint Card */}
-        <div className="bg-white border border-gray-200 rounded-3xl shadow-xl flex-1 flex flex-col hover:scale-[1.02] transition-transform duration-200">
-          <div className="flex items-center gap-3 p-6 border-b border-gray-100">
-            <Calendar className="w-6 h-6 text-blue-500" />
-            <h2 className="text-2xl font-semibold text-gray-800">Sprints</h2>
-          </div>
-          <div className="p-4 overflow-y-auto flex-1 max-h-[550px]">
-            <Sprint
-              sprintName={sprintName}
-              setSprintName={setSprintName}
-              goal={goal}
-              setGoal={setGoal}
-              startDate={startDate}
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-              sprints={sprints}
-              loading={sprintLoading}
-              handleSprintCreate={handleSprintCreate}
-              handleWeekSelect={handleWeekSelect}
-              selectedWeek={selectedWeek}
-            />
-          </div>
-        </div>
-
-        {/* Epic Card */}
-        <div className="bg-white border border-gray-200 rounded-3xl shadow-xl flex-1 flex flex-col hover:scale-[1.02] transition-transform duration-200">
-          <div className="flex items-center gap-3 p-6 border-b border-gray-100">
-            <Layers className="w-6 h-6 text-purple-500" />
-            <h2 className="text-2xl font-semibold text-gray-800">Epics</h2>
-          </div>
-          <div className="p-4 overflow-y-auto flex-1 max-h-[550px]">
-            <Epic
-              epicName={epicName}
-              setEpicName={setEpicName}
-              epics={epics}
-              loading={epicLoading}
-              handleEpicCreate={handleEpicCreate}
-            />
-          </div>
-        </div>
+        <Backlog
+          formData={backlogForm}
+          setFormData={setBacklogForm}
+          handleChange={handleBacklogChange}
+          handleSubmit={handleBacklogCreate}
+          backlogs={backlogs}
+          loading={backlogLoading}
+          epics={epics}
+          users={users}
+          sprints={sprints}
+          onAssignToSprint={handleAssignToSprint}
+          selectedEpicId={selectedEpicId}
+        />
+      </div>
 
       </div>
+
+      
+
+      {/* ===== SPRINT Section ===== */}
+      <section className=" p-6 lg:p-8 rounded-3xl shadow-md border ">
+        
+
+        <Sprint
+          sprintName={sprintName}
+          setSprintName={setSprintName}
+          goal={goal}
+          setGoal={setGoal}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          sprints={sprints}
+          loading={sprintLoading}
+          handleSprintCreate={handleSprintCreate}
+          handleWeekSelect={handleWeekSelect}
+          selectedWeek={selectedWeek}
+        />
+      </section>
     </div>
-  );
+  </div>
+);
+
 };
 
   export default ProductBacklog;

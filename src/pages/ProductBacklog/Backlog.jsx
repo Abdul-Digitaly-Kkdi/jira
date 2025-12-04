@@ -1,3 +1,4 @@
+import { ChevronDown, Download, FlipVertical } from "lucide-react";
 import React, { useState } from "react";
 
 const Backlog = ({
@@ -11,9 +12,25 @@ const Backlog = ({
   users,
   sprints,
   onAssignToSprint,
+  selectedEpicId,
 }) => {
-
   const [selectedSprintId, setSelectedSprintId] = useState("");
+  const [showBacklogList, setShowBacklogList] = useState(true);
+  const [selectedBacklogs, setSelectedBacklogs] = useState([]);
+
+
+  const filteredBacklogs = selectedEpicId
+    ? backlogs.filter((item) => item.epic_id === selectedEpicId)
+    : backlogs;
+
+    const handleCheckboxChange = (id) => {
+  setSelectedBacklogs((prev) =>
+    prev.includes(id)
+      ? prev.filter((bid) => bid !== id)
+      : [...prev, id]
+  );
+};
+
 
   return (
     <div className="max-w-5xl mx-auto p-8 bg-white rounded-3xl shadow-2xl border border-gray-100">
@@ -29,7 +46,7 @@ const Backlog = ({
         className="space-y-6"
       >
         {/* First row: Type, Name, Epic, Priority, Assignee */}
-        <div className="flex flex-col  gap-4">
+        <div className="flex   gap-4">
           {/* Type */}
           <div>
             <select
@@ -122,7 +139,7 @@ const Backlog = ({
             onChange={handleChange}
             rows={4}
             placeholder="Description"
-            className="w-full px-4 py-2 rounded-xl border border-gray-300"
+            className="w-full p-2 rounded-xl border border-gray-300"
           />
         </div>
 
@@ -140,27 +157,50 @@ const Backlog = ({
 
       {/* Backlog list */}
       <div className="mt-10">
-        <p className="font-bold text-2xl">BackLog Details</p>
-        {backlogs.length === 0 ? (
-          <p>No backlog items found.</p>
-        ) : (
-          <ul className="space-y-3">
-            {backlogs.map((item) => (
-              <li
-                key={item.id}
-                className="p-4 border  rounded-xl shadow-sm bg-gray-50"
-              >
-                <h4 className="font-bold">Assigned Employee: {item.name}</h4>
-                <p>Type: {item.type} </p>
-                <p>Priority: {item.priority}</p>
-                <p> Status: {item.status}</p>
-                <p> Epic Name: {item.epic_name}</p>
+        <div className="flex justify-between ">
+          <p className="font-bold text-2xl">BackLog Details</p>
+          <button onClick={() => setShowBacklogList(!showBacklogList)}>
+            <ChevronDown
+              className={`transition-transform duration-300 ${
+                showBacklogList ? "rotate-180" : "rotate-0"
+              }`}
+            />
+          </button>
+        </div>
+        {showBacklogList && (
+          <>
+            {filteredBacklogs.length === 0 ? (
+              <p>No backlog items found for this Epic.</p>
+            ) : (
+              <ul className="space-y-3">
+                {filteredBacklogs.map((item) => (
+                  <li
+  key={item.id}
+  className="p-4 border rounded-xl shadow-sm bg-gray-50 flex gap-4 items-start"
+>
+  <input
+    type="checkbox"
+    checked={selectedBacklogs.includes(item.id)}
+    onChange={() => handleCheckboxChange(item.id)}
+    className="w-5 h-5 mt-1"
+  />
 
-              </li>
-            ))}
-          </ul>
+  <div>
+    <h4 className="font-bold">Assigned Employee: {item.name}</h4>
+    <p>Type: {item.type}</p>
+    <p>Priority: {item.priority}</p>
+    <p>Status: {item.status}</p>
+    <p>Epic Name: {item.epic_name}</p>
+  </div>
+</li>
+
+                ))}
+              </ul>
+            )}
+          </>
         )}
-        <div className="flex flex-col gap-y-2.5">
+
+        <div className="flex gap-2">
           <button
             onClick={() => onAssignToSprint(item.id)}
             className="px-3 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600"

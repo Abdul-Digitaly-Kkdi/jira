@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 export default function Epic({ epicName, setEpicName, epics, loading, handleEpicCreate }) {
   return (
     <div className="max-w-2xl p-6">
+      
       {/* Input + Add Button */}
       <div className="flex flex-col gap-4 mb-6">
         <input
@@ -24,7 +25,7 @@ export default function Epic({ epicName, setEpicName, epics, loading, handleEpic
       </div>
 
       {/* Epic List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className=" flex  flex-col gap-4">
         {epics.length === 0 && (
           <p className="text-center text-gray-400 italic col-span-full">
             No epics yet. Start by adding one!
@@ -32,13 +33,15 @@ export default function Epic({ epicName, setEpicName, epics, loading, handleEpic
         )}
 
         {epics.map((e) => (
-          <div
-            key={e.id}
-            className="flex flex-col hover:scale-105 transition-transform"
-          >
-            <h3 className="text-lg font-bold capitalize mb-2">{e.name}</h3>
-            <p className="text-xs opacity-70">Epic ID: {e.id}</p>
-          </div>
+         <div
+  key={e.id}
+  onClick={() => setSelectedEpicId(e.id)}
+  className="flex flex-col hover:scale-105 transition-transform cursor-pointer bg-gray-100 p-4 rounded-xl"
+>
+  <h3 className="text-lg font-bold">{e.name}</h3>
+  <p className="text-xs opacity-70">Epic ID: {e.id}</p>
+</div>
+
         ))}
       </div>
     </div>
