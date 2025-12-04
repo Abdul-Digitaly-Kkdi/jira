@@ -25,7 +25,7 @@ export default function MainLayout({ children }) {
 
   const [newProject, setNewProject] = useState({});
   const [users, setUsers] = useState([]);
-  const [projectList, setProjectList] = useState([]); // ✅ Added
+  const [projectList, setProjectList] = useState([]);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -205,12 +205,12 @@ const handleDelete = async () => {
           </div>
         )}
  {showMenu && (
-        <div className="absolute right-0 mt-2 w-36 bg-white shadow-lg rounded-md border p-2 z-50">
+        <div className="absolute right-10    p-2 z-50">
           <button
             onClick={handleDelete}
-            className="flex items-center gap-2 w-full text-left px-3 py-2 hover:bg-red-100 text-red-600"
+            className="w0 hover:scale-120 cursor-pointer   text-red-600"
           >
-            <Trash2 size={16} /> Delete Project
+            <Trash2 size={25} /> 
           </button>
         </div>
       )}

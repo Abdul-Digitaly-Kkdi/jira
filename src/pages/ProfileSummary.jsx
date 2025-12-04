@@ -126,11 +126,11 @@ export default function ProjectSummary({ projectId }) {
             <div className="mt-4 space-y-2">
               <p>
                 <b>Start:</b>{" "}
-                <span className="text-gray-700">{project.startDate}</span>
+                <span className="text-gray-700">{project.start_date}</span>
               </p>
               <p>
                 <b>End:</b>{" "}
-                <span className="text-gray-700">{project.endDate}</span>
+                <span className="text-gray-700">{project.end_date}</span>
               </p>
             </div>
           </div>
@@ -210,18 +210,25 @@ export default function ProjectSummary({ projectId }) {
             </p>
 
             <div className="flex justify-end gap-3">
-              <button
+              <div>
+                <button
                 className="px-4 py-1.5 bg-gray-500 text-white rounded-md"
                 onClick={() => setShowDeleteModal(false)}
               >
                 Cancel
               </button>
-              <button
+              </div>
+              <div>
+                <button
                 className="px-4 py-1.5 bg-red-600 text-white rounded-md"
                 onClick={handleDelete}
               >
                 Remove
               </button>
+
+              </div>
+              
+              
             </div>
           </div>
         </div>

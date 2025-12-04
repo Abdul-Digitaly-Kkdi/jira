@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import DragDropModal from '../shared/DragDropModal'
 import ProjectSummary from './ProfileSummary'
 import ProductBacklog from './ProductBacklog'
+import BoardView from './BoardView'
 
 const { TabPane } = Tabs
 
@@ -50,11 +51,7 @@ export default function ProjectsPage() {
         <div className="space-y-6 p-2">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-semibold"></h2>
-                {activeTab === "board" && (
-                    <Button type="primary" onClick={() => setDdVisible(true)}>
-                        Add Column
-                    </Button>
-                )}
+                
             </div>
 
             <Tabs
@@ -72,7 +69,7 @@ export default function ProjectsPage() {
                 </TabPane>
 
                 <TabPane tab="Board" key="board">
-                    <DragDropModal
+                    {/* <DragDropModal
                         onSave={(order) => {
                             console.log("saved order", order)
                             setDdVisible(false)
@@ -82,7 +79,8 @@ export default function ProjectsPage() {
                             { id: "t2", content: "Task 2" },
                             { id: "t3", content: "Task 3" },
                         ]}
-                    />
+                    /> */}
+                    <BoardView />
                 </TabPane>
 
                 <TabPane tab="Lists" key="Lists">
