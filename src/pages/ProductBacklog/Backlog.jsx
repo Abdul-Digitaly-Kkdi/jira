@@ -97,19 +97,20 @@ const Backlog = ({
 
           {/* Priority */}
           <div>
-            <select
-              name="priority"
-              value={formData.priority}
-              onChange={handleChange}
-              className="w-full px-4 py-2 rounded-xl border border-gray-300"
-            >
-              <option value="low">High</option>
-              <option value="urgent">Highest</option>
-              <option value="medium">Medium</option>
-              <option value="high">Low</option>
-              <option value="urgent">Lowest</option>
-            </select>
-          </div>
+  <select
+    name="priority"
+    value={formData.priority}
+    onChange={handleChange}
+    className="w-full px-4 py-2 rounded-xl border border-gray-300"
+  >
+    <option value="highest">Highest</option>
+    <option value="high">High</option>
+    <option value="medium">Medium</option>
+    <option value="low">Low</option>
+    <option value="lowest">Lowest</option>
+  </select>
+</div>
+
 
           {/* Assignee */}
           <div>

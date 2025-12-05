@@ -112,7 +112,7 @@ const handleDelete = async () => {
         width={260}
         collapsedWidth={0}
         theme="light"
-        className="min-h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
+        className="`min`-h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
       >
         {/* BRAND */}
         <div className="mb-10 flex items-center space-x-3 px-2">

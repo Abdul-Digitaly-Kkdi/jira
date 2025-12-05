@@ -61,15 +61,15 @@ export default function ProjectsPage() {
                 className='flex overflow-y-auto'
             >
                 <TabPane tab="Project Summary" key="Summary">
-                    <ProjectSummary projectId={id} />
+                    <ProjectSummary key={activeTab} projectId={id} />
                 </TabPane>
 
                 <TabPane tab="Product Backlog Items" key=" Backlog ">
-                     <ProductBacklog projectId={id} />
+                     <ProductBacklog key={activeTab} projectId={id} />
                 </TabPane>
 
                 <TabPane tab="Board" key="board">
-                    <BoardIndex />
+                    <BoardIndex key={activeTab} />
                 </TabPane>
 
                 <TabPane tab="Lists" key="Lists">
