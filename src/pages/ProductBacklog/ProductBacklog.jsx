@@ -223,7 +223,8 @@ const ProductBacklog = ({ projectId }) => {
       console.error(err);
       toast.error("Failed to assign backlog to sprint.");
     }
-  };
+  }
+
 
   return (
     <div className="p-6 lg:p-10 bg-gradient-to-br from-gray-100 to-gray-50 min-h-screen">

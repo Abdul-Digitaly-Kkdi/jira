@@ -10,6 +10,7 @@ import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { DoorClosed, LogOut, MoreHorizontal, Plus, Trash2 } from "lucide-react";
 import Modal from "./Modal";
 import { createProject, deleteProject, getAllProjects, getAllUsers } from "../API/ProjectAPI";
+import ProjectForm from "../pages/ProjectForm";
 
 const { Sider, Content } = Layout;
 
@@ -109,11 +110,12 @@ const handleDelete = async () => {
   return (
     <Layout className="app-shell">
       <Sider
-        width={260}
-        collapsedWidth={0}
-        theme="light"
-        className="`min`-h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
-      >
+  width={260}
+  collapsedWidth={0}
+  theme="light"
+  className="min-h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
+>
+
         {/* BRAND */}
         <div className="mb-10 flex items-center space-x-3 px-2">
           <div className="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-xl font-bold">
@@ -215,15 +217,16 @@ const handleDelete = async () => {
           </button>
         </div>
       )}
-        <div className="absolute bottom-5 left-5 right-5">
-          <button
-            onClick={handleOut}
-            className="w-full flex items-center gap-3 p-3 font-bold text-center  rounded-lg bg-red-500 transition"
-          >
-            <LogOut />
-            Logout
-          </button>
-        </div>
+        <div className="mt-auto pt-5">
+  <button
+    onClick={handleOut}
+    className="w-full flex items-center gap-3 p-3 font-bold text-center rounded-lg bg-red-500 transition"
+  >
+    <LogOut />
+    Logout
+  </button>
+</div>
+
       </Sider>
 
       {/* CONTENT */}
@@ -238,236 +241,18 @@ const handleDelete = async () => {
 
       {/* 🟣 PROJECT ADD MODAL */}
       {showProjectModal && (
-        <Modal
-          onCancel={() => setShowProjectModal(false)}
-          onConfirm={handleAddProject}
-        >
-          <div className="flex flex-col max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 p-4">
-            <h1 className="text-center text-2xl font-bold bg-clip-text text-transparent bg-linear-to-tr from-[#300181] via-[#6915cf] to-[#d62196] mb-6">
-              Create New Project
-            </h1>
-
-            <div className="flex flex-col divide-y divide-gray-800">
-              {/* -------- 1️⃣ Basic Details -------- */}
-              <div className="space-y-5 pb-6">
-                <h2 className="text-lg font-semibold text-blue-400">
-                  1️⃣ Basic Details
-                </h2>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-black">Project Name</label>
-                  <input
-                    type="text"
-                    placeholder="Enter project name"
-                    className="p-3 rounded-lg border border-gray-700 focus:border-blue-500 outline-none"
-                    value={newProject.name || ""}
-                    onChange={(e) =>
-                      setNewProject({ ...newProject, name: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-black">Project Key</label>
-                  <input
-                    type="text"
-                    placeholder="Short Form"
-                    className="p-3 rounded-lg border border-gray-700 focus:border-blue-500 outline-none"
-                    value={newProject.key || ""}
-                    onChange={(e) =>
-                      setNewProject({ ...newProject, key: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-black">Avatar URL</label>
-                  <input
-                    type="text"
-                    placeholder="Project profile"
-                    className="p-3 rounded-lg border border-gray-700 focus:border-blue-500 outline-none"
-                    value={newProject.avatar || ""}
-                    onChange={(e) =>
-                      setNewProject({ ...newProject, avatar: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-
-              {/* -------- 2️⃣ Timeline & Team -------- */}
-              <div className="space-y-5 py-6">
-                <h2 className="text-lg font-semibold text-green-400">
-                  2️⃣ Timeline & Team
-                </h2>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm text-black">Start Date</label>
-                    <input
-                      type="date"
-                      className="p-3 rounded-lg border border-gray-700 focus:border-blue-500 outline-none"
-                      value={newProject.startDate || ""}
-                      onChange={(e) =>
-                        setNewProject({
-                          ...newProject,
-                          startDate: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm text-black">End Date</label>
-                    <input
-                      type="date"
-                      className="p-3 rounded-lg border border-gray-700 focus:border-blue-500 outline-none"
-                      value={newProject.endDate || ""}
-                      onChange={(e) =>
-                        setNewProject({
-                          ...newProject,
-                          endDate: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-black">Project Lead</label>
-                  <select
-                    className="p-3 rounded-lg border border-gray-700 text-gray-200 focus:border-blue-500 outline-none"
-                    value={newProject.projectLead || ""}
-                    onChange={(e) =>
-                      setNewProject({
-                        ...newProject,
-                        projectLead: e.target.value,
-                      })
-                    }
-                  >
-                    <option value="">Select Lead</option>
-                    {users.map((u) => (
-                      <option key={u.id} value={u.id}>
-                        {u.name} {u.full_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Assigned Employees (Multi-select) */}
-                {/* Assigned Employees (Multi-select) */}
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-black">
-                    Assigned Employees
-                  </label>
-
-                  {/* 🟦 Selected employees show box */}
-                  {newProject.assignedEmployees?.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {newProject.assignedEmployees.map((id) => {
-                        const emp = users.find((u) => u.id === id);
-                        return (
-                          <div
-                            key={id}
-                            className="flex items-center bg-gray-800 text-white px-3 py-1 rounded-full text-sm"
-                          >
-                            {emp?.full_name || "Unknown"}
-
-                            {/* ❌ Remove button */}
-                            <button
-                              onClick={() =>
-                                setNewProject({
-                                  ...newProject,
-                                  assignedEmployees:
-                                    newProject.assignedEmployees.filter(
-                                      (eid) => eid !== id
-                                    ),
-                                })
-                              }
-                              className="ml-2 text-red-400 hover:text-red-600"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {/* 🟦 Dropdown for selecting new employee */}
-                  <select
-                    className="p-3 rounded-lg border border-gray-700 text-gray-200 
-    focus:border-blue-500 outline-none"
-                    value=""
-                    onChange={(e) => {
-                      if (!e.target.value) return;
-
-                      setNewProject({
-                        ...newProject,
-                        assignedEmployees: [
-                          ...newProject.assignedEmployees,
-                          e.target.value,
-                        ],
-                      });
-                    }}
-                  >
-                    <option value="">Select Employee</option>
-
-                    {users
-                      .filter(
-                        (u) =>
-                          u.id !== newProject.projectLead && // ❌ exclude lead
-                          !newProject.assignedEmployees?.includes(u.id) // ❌ exclude already selected
-                      )
-                      .map((u) => (
-                        <option key={u.id} value={u.id}>
-                          {u.name} {u.full_name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-black">Platform</label>
-              <select
-  className="p-3 rounded-lg border border-gray-700 text-gray-200 focus:border-blue-500 outline-none"
-  value={newProject.platform || ""}
-  onChange={(e) =>
-    setNewProject({ ...newProject, platform: e.target.value })
-  }
+       <Modal
+  onCancel={() => setShowProjectModal(false)}
+  onConfirm={handleAddProject}
 >
-  <option value="">Select Platform</option>
-  <option value="web">Web</option>
-  <option value="android">Android</option>
-  <option value="ios">IOS</option>
-</select>
+  <ProjectForm
+    newProject={newProject}
+    setNewProject={setNewProject}
+    users={users}
+    onSubmit={handleAddProject} 
+  />
+</Modal>
 
-
-                </div>
-              </div>
-
-              {/* -------- 3️⃣ Labels & Description -------- */}
-              <div className="space-y-5 py-6">
-                <h2 className="text-lg font-semibold text-pink-400">
-                  3️⃣ Description
-                </h2>
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm text-black">Description</label>
-                  <textarea
-                    placeholder="Enter project description"
-                    className="p-3 rounded-lg border border-gray-700 focus:border-blue-500 outline-none placeholder-gray-500 resize-none h-28"
-                    value={newProject.description || ""}
-                    onChange={(e) =>
-                      setNewProject({
-                        ...newProject,
-                        description: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal>
       )}
     </Layout>
   );
