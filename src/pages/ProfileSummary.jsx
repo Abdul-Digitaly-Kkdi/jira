@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getProjectById, removeProjectMember } from "../API/ProjectAPI";
-import {
-  Calendar,
-  User,
-  Users,
-  Layers,
-  Tag,
-  Info,
-  Trash2,
-} from "lucide-react";
+import { Calendar, User, Users, Layers, Tag, Info, Trash2 } from "lucide-react";
 
 export default function ProjectSummary({ projectId }) {
   const [project, setProject] = useState(null);
@@ -26,18 +18,19 @@ export default function ProjectSummary({ projectId }) {
       const data = await getProjectById(projectId);
 
       const formatted = {
-        ...data,
-        projectLead: data.project_lead,
-        start_date: data.start_date || data.startDate || "",
+  ...data,
+  projectLead: data.project_lead,
+  platform: data.platform || "Not Assigned",
+  start_date: data.start_date || data.startDate || "",
   end_date: data.end_date || data.endDate || "",
-        assignedEmployees:
-  data.members?.map((m) => ({
-    id: m.id,
-    full_name: m.full_name,
-    email: m.email,
-  })) || [],
+  assignedEmployees:
+    data.members?.map((m) => ({
+      id: m.id,
+      full_name: m.name,
+      email: m.email,
+    })) || [],
+};
 
-      };
 
       setProject(formatted);
     } catch (err) {
@@ -50,9 +43,7 @@ export default function ProjectSummary({ projectId }) {
   const handleDelete = async () => {
     try {
       await Promise.all(
-        selectedEmployees.map((empId) =>
-          removeProjectMember(project.id, empId)
-        )
+        selectedEmployees.map((empId) => removeProjectMember(project.id, empId))
       );
 
       setProject((prev) => ({
@@ -71,9 +62,7 @@ export default function ProjectSummary({ projectId }) {
 
   const toggleEmployee = (id) => {
     setSelectedEmployees((prev) =>
-      prev.includes(id)
-        ? prev.filter((emp) => emp !== id)
-        : [...prev, id]
+      prev.includes(id) ? prev.filter((emp) => emp !== id) : [...prev, id]
     );
   };
 
@@ -93,7 +82,6 @@ export default function ProjectSummary({ projectId }) {
 
   return (
     <div className="p-8 space-y-8">
-
       {/* HEADER */}
       <div className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-7 rounded-3xl shadow-lg">
         <h1 className="flex items-center gap-3 text-2xl font-bold">
@@ -105,10 +93,8 @@ export default function ProjectSummary({ projectId }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
         {/* LEFT PANEL */}
         <div className="space-y-6">
-
           {/* Project Key */}
           <div className="glass-card">
             <div className="card-header">
@@ -124,8 +110,8 @@ export default function ProjectSummary({ projectId }) {
               <Info className="text-indigo-600" />
               <h2>Platform</h2>
             </div>
-            <p className="card-value capitalize">
-              {project.platform}
+            <p className="card-value text-black capitalize">
+              {project.platform || "Not Assigned"}
             </p>
           </div>
 
@@ -149,7 +135,6 @@ export default function ProjectSummary({ projectId }) {
 
         {/* RIGHT PANEL */}
         <div className="space-y-6">
-
           {/* Lead */}
           <div className="glass-card">
             <div className="card-header">
@@ -163,7 +148,6 @@ export default function ProjectSummary({ projectId }) {
 
           {/* Assigned Employees */}
           <div className="glass-card">
-
             <div className="flex justify-between items-center">
               <div className="card-header !mb-0">
                 <Users className="text-indigo-600" />
@@ -241,7 +225,6 @@ export default function ProjectSummary({ projectId }) {
           </div>
         </div>
       )}
-
     </div>
   );
 }
