@@ -113,7 +113,7 @@ const handleDelete = async () => {
   width={260}
   collapsedWidth={0}
   theme="light"
-  className="min-h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
+  className="h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
 >
 
         {/* BRAND */}
@@ -217,7 +217,7 @@ const handleDelete = async () => {
           </button>
         </div>
       )}
-        <div className="mt-auto pt-5">
+        <div className="mt-70 pt-5">
   <button
     onClick={handleOut}
     className="w-full flex items-center gap-3 p-3 font-bold text-center rounded-lg bg-red-500 transition"
@@ -231,8 +231,8 @@ const handleDelete = async () => {
 
       {/* CONTENT */}
       <Layout>
-        <Content className="p-8 bg-gray-50 min-h-screen flex flex-col">
-  <div className="flex-1 overflow-y-auto">
+        <Content className="p-8 bg-gray-50 h-screen overflow-hidden flex flex-col">
+  <div className="flex-1 ">
     <Outlet />
   </div>
 </Content>

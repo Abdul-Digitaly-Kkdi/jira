@@ -57,14 +57,11 @@ export const getWorkItems = async (projectId) => {
 };
 
 //  Manage project members
-export const manageProjectMember = async (project_id, payload) => {
-  try {
-    const res = await API.post(`/projects/${project_id}/members`, payload);
-    return res.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+export const addProjectMember = async (projectId) => {
+  const res = await API.post(`/projects/${projectId}/members`, body);
+  return res.data;
 };
+
 
 
 // Remove a member from a project
