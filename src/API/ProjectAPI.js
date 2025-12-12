@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   // baseURL: "https://project-management-1409.onrender.com/api/v1",
-  baseURL: "https://project-management-sfrn.onrender.com/api/v1",
+  baseURL: "https://pmtoolapidev.digitaly.live/api/v1",
 
   headers: {
     "Content-Type": "application/json",
@@ -18,10 +18,8 @@ API.interceptors.request.use((config) => {
 });
 
 //  Get all projects
-export const getAllProjects = async () => {
-  const res = await API.get("/projects");
-  console.log(res, "response");
-
+export const getAllProjects = async (skip = 0, limit = 100) => {
+  const res = await API.get(`/projects/?skip=${skip}&limit=${limit}`);
   return res.data;
 };
 
@@ -57,10 +55,16 @@ export const getWorkItems = async (projectId) => {
 };
 
 //  Manage project members
-export const addProjectMember = async (projectId) => {
+export const addProjectMember = async (projectId, userId, role) => {
+  const body = {
+    user_id: userId,
+    role: role
+  };
+
   const res = await API.post(`/projects/${projectId}/members`, body);
   return res.data;
 };
+
 
 
 

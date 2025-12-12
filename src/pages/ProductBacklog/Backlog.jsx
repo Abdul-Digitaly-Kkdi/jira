@@ -18,19 +18,15 @@ const Backlog = ({
   const [showBacklogList, setShowBacklogList] = useState(true);
   const [selectedBacklogs, setSelectedBacklogs] = useState([]);
 
-
   const filteredBacklogs = selectedEpicId
     ? backlogs.filter((item) => item.epic_id === selectedEpicId)
     : backlogs;
 
-    const handleCheckboxChange = (id) => {
-  setSelectedBacklogs((prev) =>
-    prev.includes(id)
-      ? prev.filter((bid) => bid !== id)
-      : [...prev, id]
-  );
-};
-
+  const handleCheckboxChange = (id) => {
+    setSelectedBacklogs((prev) =>
+      prev.includes(id) ? prev.filter((bid) => bid !== id) : [...prev, id]
+    );
+  };
 
   return (
     <div className="max-w-5xl mx-auto p-8 bg-white rounded-3xl shadow-2xl border border-gray-100">
@@ -56,7 +52,7 @@ const Backlog = ({
               className="w-full px-4 py-2 rounded-xl border border-gray-300"
             >
               <option value="" disabled hidden>
-                Select Type
+                 Type
               </option>
               <option value="task">Task</option>
               <option value="story">Story</option>
@@ -97,20 +93,19 @@ const Backlog = ({
 
           {/* Priority */}
           <div>
-  <select
-    name="priority"
-    value={formData.priority}
-    onChange={handleChange}
-    className="w-full px-4 py-2 rounded-xl border border-gray-300"
-  >
-    <option value="highest">Highest</option>
-    <option value="high">High</option>
-    <option value="medium">Medium</option>
-    <option value="low">Low</option>
-    <option value="lowest">Lowest</option>
-  </select>
-</div>
-
+            <select
+              name="priority"
+              value={formData.priority}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-xl border border-gray-300"
+            >
+              <option value="highest">Highest</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+              <option value="lowest">Lowest</option>
+            </select>
+          </div>
 
           {/* Assignee */}
           <div>
@@ -176,25 +171,26 @@ const Backlog = ({
               <ul className="space-y-3">
                 {filteredBacklogs.map((item) => (
                   <li
-  key={item.id}
-  className="p-4 border rounded-xl shadow-sm bg-gray-50 flex gap-4 items-start"
->
-  <input
-    type="checkbox"
-    checked={selectedBacklogs.includes(item.id)}
-    onChange={() => handleCheckboxChange(item.id)}
-    className="w-5 h-5 mt-1"
-  />
+                    key={item.id}
+                    className="p-4 border rounded-xl shadow-sm bg-gray-50 flex gap-4 items-start"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedBacklogs.includes(item.id)}
+                      onChange={() => handleCheckboxChange(item.id)}
+                      className="w-5 h-5 mt-1"
+                    />
 
-  <div>
-    <h4 className="font-bold">Assigned Employee: {item.name}</h4>
-    <p>Type: {item.type}</p>
-    <p>Priority: {item.priority}</p>
-    <p>Status: {item.status}</p>
-    <p>Epic Name: {item.epic_name}</p>
-  </div>
-</li>
-
+                    <div>
+                      <h4 className="font-bold">
+                        Assigned Employee: {item.name}
+                      </h4>
+                      <p>Type: {item.type}</p>
+                      <p>Priority: {item.priority}</p>
+                      <p>Status: {item.status}</p>
+                      <p>Epic Name: {item.epic_name}</p>
+                    </div>
+                  </li>
                 ))}
               </ul>
             )}

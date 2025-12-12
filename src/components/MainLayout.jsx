@@ -7,9 +7,21 @@ import {
   ClockCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
-import { DoorClosed, LogOut, MoreHorizontal, Plus, Trash2 } from "lucide-react";
+import {
+  ChevronsUp,
+  DoorClosed,
+  LogOut,
+  MoreHorizontal,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import Modal from "./Modal";
-import { createProject, deleteProject, getAllProjects, getAllUsers } from "../API/ProjectAPI";
+import {
+  createProject,
+  deleteProject,
+  getAllProjects,
+  getAllUsers,
+} from "../API/ProjectAPI";
 import ProjectForm from "../pages/ProjectForm";
 
 const { Sider, Content } = Layout;
@@ -24,20 +36,15 @@ export default function MainLayout({ children }) {
     ? "employees"
     : "timetracking";
 
- const [newProject, setNewProject] = useState({
-  assignedEmployees: [],
-});
+  const [newProject, setNewProject] = useState({
+    assignedEmployees: [],
+  });
 
   const [users, setUsers] = useState([]);
   const [projectList, setProjectList] = useState([]);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-
-  // useEffect(() => {
-  //   setNewProject([
-  //   ]);
-  // }, []);
-
+  const [showProjects, setShowProjects] = useState(false);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -56,44 +63,42 @@ export default function MainLayout({ children }) {
     : null;
 
   const handleAddProject = async () => {
-  try {
-    const payload = {
-      ...newProject,
-      platform: newProject.platform?.toLowerCase(),  // 🔥 FIX
-    };
+    try {
+      const payload = {
+        ...newProject,
+        platform: newProject.platform?.toLowerCase(), // 🔥 FIX
+      };
 
-    console.log("Final Payload:", payload);
+      console.log("Final Payload:", payload);
 
-    const res = await createProject(payload);
+      const res = await createProject(payload);
 
-    console.log("Created", res.data);
-    toast.success("Project created!");
-    setShowProjectModal(false);
-
-  } catch (error) {
-    console.error("Failed to create project:", error);
-  }
-};
+      console.log("Created", res.data);
+      toast.success("Project created Sucessfully !");
+      setShowProjectModal(false);
+    } catch (error) {
+      console.error("Failed to create project:", error);
+    }
+  };
 
   const handleOut = () => {
     navigate("/");
   };
-  
-useEffect(() => {
-  const fetchProjects = async () => {
-    try {
-      const data = await getAllProjects();
-      setProjectList(data);
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-    }
-  };
 
-  fetchProjects();
-}, []);
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const data = await getAllProjects();
+        setProjectList(data);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
 
+    fetchProjects();
+  }, []);
 
-const handleDelete = async () => {
+  const handleDelete = async () => {
     try {
       const res = await deleteProject(activeProjectId);
       console.log("Deleted:", res);
@@ -105,17 +110,14 @@ const handleDelete = async () => {
     }
   };
 
-
-
   return (
     <Layout className="app-shell">
       <Sider
-  width={260}
-  collapsedWidth={0}
-  theme="light"
-  className="h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
->
-
+        width={260}
+        collapsedWidth={0}
+        theme="light"
+        className="h-screen p-5 bg-white shadow-lg border-r border-gray-200 flex flex-col justify-between"
+      >
         {/* BRAND */}
         <div className="mb-10 flex items-center space-x-3 px-2">
           <div className="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-xl font-bold">
@@ -173,17 +175,33 @@ const handleDelete = async () => {
 
               <button
                 className="font-bold rounded-full hover:scale-120 cursor-pointer"
+                title="Create Project"
                 onClick={() => setShowProjectModal(true)}
               >
                 <Plus size={13} />
               </button>
             </div>
+          
+            <div
+              className="w-full  mb-5 rounded-xl border border-gray-300 
+             bg-white hover:bg-gray-100 transition-all flex justify-end 
+              shadow-sm cursor-pointer"
+              onClick={() => setShowProjects(!showProjects)}
+            >
+              <button className="p-2 rounded-lg flex  items-center">
+                <span>Click To View</span>
+                {showProjects ? (
+                  <ChevronsUp className="transition-transform duration-300 rotate-180" />
+                ) : (
+                  <ChevronsUp className="transition-transform duration-300" />
+                )}
+                
+              </button>
+            </div>
 
-            <div className="space-y-2">
-              {projectList?.map(
-                (
-                  p 
-                ) => (
+            {showProjects && (
+              <div className="space-y-2 max-h-60 overflow-y-auto pr-1 custom-scrollbar">
+                {projectList?.map((p) => (
                   <button
                     key={p.id}
                     onClick={() => navigate(`/projects/${p.id}`)}
@@ -194,65 +212,65 @@ const handleDelete = async () => {
                     }`}
                   >
                     <span className="font-medium">{p.name}</span>
-                    <span className="text-xs font-mono opacity-70">
-                      <button
-        onClick={() => setShowMenu(!showMenu)}
-        className="p-2 hover:bg-gray-200 rounded-full"
-      >
-        <MoreHorizontal />
-      </button></span>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowMenu(!showMenu);
+                      }}
+                      className="p-2 hover:bg-gray-200 rounded-full"
+                    >
+                      <MoreHorizontal />
+                    </button>
                   </button>
-                )
-              )}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
- {showMenu && (
-        <div className="absolute right-10    p-2 z-50">
+        {showMenu && (
+          <div className="absolute right-10    p-2 z-50">
+            <button
+              onClick={handleDelete}
+              className="w0 hover:scale-120 cursor-pointer   text-red-600"
+            >
+              <Trash2 size={25} />
+            </button>
+          </div>
+        )}
+        <div className="bottom-2 absolute">
           <button
-            onClick={handleDelete}
-            className="w0 hover:scale-120 cursor-pointer   text-red-600"
+            onClick={handleOut}
+            className="w-full  flex items-center gap-3 px-15 py-3 font-bold text-center rounded-lg bg-red-500 transition"
           >
-            <Trash2 size={25} /> 
+            <LogOut />
+            <span className="hidden md:flex text-md">Logout</span>
           </button>
         </div>
-      )}
-        <div className="mt-70 pt-5">
-  <button
-    onClick={handleOut}
-    className="w-full flex items-center gap-3 p-3 font-bold text-center rounded-lg bg-red-500 transition"
-  >
-    <LogOut />
-    Logout
-  </button>
-</div>
-
       </Sider>
 
       {/* CONTENT */}
       <Layout>
         <Content className="p-8 bg-gray-50 h-screen overflow-hidden flex flex-col">
-  <div className="flex-1 ">
-    <Outlet />
-  </div>
-</Content>
-
+          <div className="flex-1 ">
+            <Outlet />
+          </div>
+        </Content>
       </Layout>
 
       {/* 🟣 PROJECT ADD MODAL */}
       {showProjectModal && (
-       <Modal
-  onCancel={() => setShowProjectModal(false)}
-  onConfirm={handleAddProject}
->
-  <ProjectForm
-    newProject={newProject}
-    setNewProject={setNewProject}
-    users={users}
-    onSubmit={handleAddProject} 
-  />
-</Modal>
-
+        <Modal
+          onCancel={() => setShowProjectModal(false)}
+          onConfirm={handleAddProject}
+        >
+          <ProjectForm
+            newProject={newProject}
+            setNewProject={setNewProject}
+            users={users}
+            onSubmit={handleAddProject}
+          />
+        </Modal>
       )}
     </Layout>
   );
